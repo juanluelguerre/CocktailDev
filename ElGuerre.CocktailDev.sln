@@ -5,29 +5,31 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{BC7C0AF4-4A96-4ABC-BC86-FB5AE5BD8377}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.Api", "services\Basket\Basket.Api\Basket.Api.csproj", "{57AC08B5-84AC-42FB-A834-25AE69A45E7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailDev.Basket.Api", "services\Basket\Basket.Api\CocktailDev.Basket.Api.csproj", "{57AC08B5-84AC-42FB-A834-25AE69A45E7E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basket", "Basket", "{1570039E-E57B-4587-B9CE-3A6388E7B313}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.UnitTests", "services\Basket\Basket.UnitTests\Basket.UnitTests.csproj", "{0B323857-C0E7-4D6C-9BD8-A7EFBE895FED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailDev.Basket.UnitTests", "services\Basket\Basket.UnitTests\CocktailDev.Basket.UnitTests.csproj", "{0B323857-C0E7-4D6C-9BD8-A7EFBE895FED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orders.Api", "services\Orders\Orders.Api\Orders.Api.csproj", "{6339EBC8-C5E9-4B11-8698-EED5B8EE9EEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailDev.Orders.Api", "services\Orders\Orders.Api\CocktailDev.Orders.Api.csproj", "{6339EBC8-C5E9-4B11-8698-EED5B8EE9EEF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orders", "Orders", "{3584DA9B-9D6E-466A-B216-54780AF4FD85}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orders.UnitTests", "services\Orders\Orders.UnitTests\Orders.UnitTests.csproj", "{B99D016A-72EA-456D-AAA0-9CF1A191E0B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailDev.Orders.UnitTests", "services\Orders\Orders.UnitTests\CocktailDev.Orders.UnitTests.csproj", "{B99D016A-72EA-456D-AAA0-9CF1A191E0B6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Products.Api", "services\Products\Products.Api\Products.Api.csproj", "{FD799E5C-489E-4A1F-8353-7A4A3A1E1E20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailDev.Products.Api", "services\Products\Products.Api\CocktailDev.Products.Api.csproj", "{FD799E5C-489E-4A1F-8353-7A4A3A1E1E20}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Products", "Products", "{ECA6521A-784D-43E7-BA83-CCED755F2A91}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Products.UnitTests", "services\Products\Products.UnitTests\Products.UnitTests.csproj", "{D68E061D-3636-481F-A9D2-1C808591D28B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailDev.Products.UnitTests", "services\Products\Products.UnitTests\CocktailDev.Products.UnitTests.csproj", "{D68E061D-3636-481F-A9D2-1C808591D28B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{55214C9B-E5AF-4838-BFF4-E97C71F38522}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blazor", "Blazor", "{02E2D04F-3823-4A59-A038-F68B9D59910D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Angular", "Angular", "{93DB9F2F-239C-4260-883A-F28034CEFC40}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Customers", "Customers", "{8CD74827-573A-4176-87FB-AD966115AF7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,7 @@ Global
 		{D68E061D-3636-481F-A9D2-1C808591D28B} = {ECA6521A-784D-43E7-BA83-CCED755F2A91}
 		{02E2D04F-3823-4A59-A038-F68B9D59910D} = {55214C9B-E5AF-4838-BFF4-E97C71F38522}
 		{93DB9F2F-239C-4260-883A-F28034CEFC40} = {55214C9B-E5AF-4838-BFF4-E97C71F38522}
+		{8CD74827-573A-4176-87FB-AD966115AF7A} = {BC7C0AF4-4A96-4ABC-BC86-FB5AE5BD8377}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49935850-2529-4782-87F8-C1994D87A915}
