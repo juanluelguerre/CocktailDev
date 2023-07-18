@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Angular", "Angular", "{93DB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Customers", "Customers", "{8CD74827-573A-4176-87FB-AD966115AF7A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailDev.Gateway", "services\Gateway\CocktailDev.Gateway.csproj", "{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{D68E061D-3636-481F-A9D2-1C808591D28B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D68E061D-3636-481F-A9D2-1C808591D28B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D68E061D-3636-481F-A9D2-1C808591D28B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{02E2D04F-3823-4A59-A038-F68B9D59910D} = {55214C9B-E5AF-4838-BFF4-E97C71F38522}
 		{93DB9F2F-239C-4260-883A-F28034CEFC40} = {55214C9B-E5AF-4838-BFF4-E97C71F38522}
 		{8CD74827-573A-4176-87FB-AD966115AF7A} = {BC7C0AF4-4A96-4ABC-BC86-FB5AE5BD8377}
+		{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C} = {BC7C0AF4-4A96-4ABC-BC86-FB5AE5BD8377}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49935850-2529-4782-87F8-C1994D87A915}
