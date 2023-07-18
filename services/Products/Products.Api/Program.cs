@@ -1,6 +1,16 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using CocktailDev.Products.Api.Domain;
+using CocktailDev.Products.Api.Infrastructure.Repositories;
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    // cfg.AddBehavior<ABC>();
+});
+
+builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,4 +33,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
