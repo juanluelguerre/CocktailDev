@@ -27,11 +27,11 @@ public class InMemoryOrderRepository : IOrderRepository
     {
         var products = new List<Product>
         {
-            new(1, "Laptop", 1100),
-            new(2, "Mouse", 50),
-            new(3, "Camera", 45),
-            new(4, "Keyboard", 99.5m),
-            new(5, "Microphone", 67.99m)
+            new(1, "Laptop"),
+            new(2, "Mouse"),
+            new(3, "Camera"),
+            new(4, "Keyboard"),
+            new(5, "Microphone")
         };
 
         this.orders.Add(new Order("ElGuerre.com", products));

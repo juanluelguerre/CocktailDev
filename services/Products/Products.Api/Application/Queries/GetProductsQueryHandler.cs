@@ -17,6 +17,6 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, List<Pr
         CancellationToken cancellationToken)
     {
         var products = await this.productRepository.GetProductsAsync();
-        return products.Select(p => new ProductViewModel(p.Id, p.Name, p.Price)).ToList();
+        return products.Select(p => new ProductViewModel(p.Id, p.Name)).ToList();
     }
 }

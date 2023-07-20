@@ -20,29 +20,21 @@ public class InMemoryOrderRepository : IOrderRepository
     {
         var orders = new List<Order>();
 
-        var order1 = new Order
-        {
-            OrderId = 1,
-            CustomerName = "John Doe",
-            Products = new List<Product>
+        var order1 = new Order("John Doe", new List<Product>
             {
-                new Product { ProductId = 1, Name = "Product 1", Price = 10m },
-                new Product { ProductId = 2, Name = "Product 2", Price = 20m }
+                new(1, "Product 1"),
+                new(2, "Product 2")
             }
-        };
+        );
         orders.Add(order1);
 
-        var order2 = new Order
-        {
-            OrderId = 2,
-            CustomerName = "Jane Smith",
-            Products = new List<Product>
+        var order2 = new Order("", new List<Product>
             {
-                new Product { ProductId = 3, Name = "Product 3", Price = 30m },
-                new Product { ProductId = 4, Name = "Product 4", Price = 40m },
-                new Product { ProductId = 5, Name = "Product 5", Price = 50m }
+                new(1, "Product 1"),
+                new(2, "Product 2"),
+                new(3, "Product 3")
             }
-        };
+        );
         orders.Add(order2);
 
         return orders;

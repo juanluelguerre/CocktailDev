@@ -1,8 +1,9 @@
-﻿namespace CocktailDev.Gateway.Domain;
+﻿using System.Text.Json.Serialization;
 
-public class Order
-{
-    public long OrderId { get; internal set; }
-    public string CustomerName { get; set; }
-    public List<Product> Products { get; set; }
-}
+namespace CocktailDev.Gateway.Domain;
+
+public record Order(
+    [property: JsonPropertyName("customerName")]
+    string CustomerName,
+    [property: JsonPropertyName("products")]
+    List<Product> Products);

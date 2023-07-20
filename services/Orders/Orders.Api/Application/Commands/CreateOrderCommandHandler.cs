@@ -16,7 +16,7 @@ namespace CocktailDev.Orders.Api.Application.Commands
             CancellationToken cancellationToken)
         {
             var order = new Order(request.CustomerName,
-                request.Products.Select(p => new Product(p.Id, p.Name, p.Price)).ToList());
+                request.Products.Select(p => new Product(p.Id, p.Name)).ToList());
 
             var createdOrder = await this.orderRepository.CreateOrderAsync(order);
             return createdOrder;

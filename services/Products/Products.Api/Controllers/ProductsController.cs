@@ -25,6 +25,15 @@ public class ProductsController : ControllerBase
         return this.Ok(products);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProduct(long id)
+    {
+        // TODO: We can use here a factory repository to delegate query creation
+        var query = new GetProductQuery(id);
+        var products = await this.mediator.Send(query);
+        return this.Ok(products);
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command)
     {

@@ -1,8 +1,7 @@
-﻿namespace CocktailDev.Gateway.Domain;
+﻿using System.Text.Json.Serialization;
 
-public class Product
-{
-    public long ProductId { get; set; }
-    public string Name { get; set; }
-    public decimal Price { get; set; }
-}
+namespace CocktailDev.Gateway.Domain;
+
+public record Product(
+    [property: JsonPropertyName("id")] long Id,
+    [property: JsonPropertyName("name")] string Name);

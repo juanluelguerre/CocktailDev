@@ -3,5 +3,6 @@
 public interface IProductRepository
 {
     Task<List<Product>> GetProductsAsync();
-    Task<Product> CreateProductAsync(Product product);
+    Task<ProductDetail?> FindProductAsync(long id);
+    Task<ProductDetail> CreateProductAsync(ProductDetail product);
 }

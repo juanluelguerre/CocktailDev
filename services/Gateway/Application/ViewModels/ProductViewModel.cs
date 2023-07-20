@@ -1,3 +1,3 @@
-﻿namespace CocktailDev.Orders.Api.Application.ViewModels;
+﻿namespace CocktailDev.Gateway.Application.ViewModels;
 
 public record struct ProductViewModel(long Id, string Name);

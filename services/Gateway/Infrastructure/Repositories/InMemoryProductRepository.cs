@@ -4,7 +4,7 @@ namespace CocktailDev.Gateway.Infrastructure.Repositories;
 
 public class InMemoryProductRepository : IProductRepository
 {
-    private readonly List<Product> products;
+    private readonly List<ProductDetail> products;
 
     public InMemoryProductRepository()
     {
@@ -13,20 +13,20 @@ public class InMemoryProductRepository : IProductRepository
 
     public async Task<List<Product>> GetProductsAsync()
     {
-        return this.products;
+        return await Task.FromResult(this.products.Select(p => new Product(p.Id, p.Name)).ToList());
     }
 
-    private static List<Product> GenerateSampleProducts()
+    public async Task<ProductDetail?> FindProductAsync(long id)
     {
-        var products = new List<Product>();
+        return await Task.FromResult(this.products.FirstOrDefault(p => p.Id == id));
+    }
+
+    private static List<ProductDetail> GenerateSampleProducts()
+    {
+        var products = new List<ProductDetail>();
         for (var i = 1; i <= 50; i++)
         {
-            products.Add(new Product
-            {
-                ProductId = i,
-                Name = $"Product {i}",
-                Price = i * 10m
-            });
+            products.Add(new(i, $"Product {i}", i * 10m));
         }
 
         return products;

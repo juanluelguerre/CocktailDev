@@ -16,8 +16,8 @@ public class GetProductsQueryHandler : IRequestHandler<GetOrdersQuery, List<Orde
     public async Task<List<OrderViewModel>> Handle(GetOrdersQuery request,
         CancellationToken cancellationToken)
     {
-        var products = await this.orderRepository.GetOrdersAsync();
-        return products.Select(o => new OrderViewModel(o.CustomerName,
-            o.Products.Select(p => new ProductViewModel(p.Id, p.Name, p.Price)).ToList())).ToList();
+        var orders = await this.orderRepository.GetOrdersAsync();
+        return orders.Select(o => new OrderViewModel(o.CustomerName,
+            o.Products.Select(p => new ProductViewModel(p.Id, p.Name)).ToList())).ToList();
     }
 }

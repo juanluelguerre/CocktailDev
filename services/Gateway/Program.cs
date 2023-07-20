@@ -1,59 +1,49 @@
-// Ref: https://github.com/graphql-dotnet/examples/blob/master/src/AspNetCoreController/Example/Startup.cs
-
 using CocktailDev.Gateway;
+using CocktailDev.Gateway.Application.Queries;
 using CocktailDev.Gateway.Application.Resolvers;
 using CocktailDev.Gateway.Domain;
 using CocktailDev.Gateway.Infrastructure.Repositories;
-using CocktailDev.Gateway.Schemas;
-using GraphQL;
-using GraphQL.Server.Ui.Playground;
-using Microsoft.Extensions.Options;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.Services.AddScoped<OrderSummarySchema>();
-builder.Services.AddGraphQL(b => b
-    .AddSchema<OrderSummarySchema>()
-    .AddSystemTextJson()
-    // .AddValidationRule<InputValidationRule>()
-    .AddGraphTypes(typeof(Program).Assembly)
-    //.AddMemoryCache()
-    .AddApolloTracing(options => options.RequestServices!
-        .GetRequiredService<IOptions<GraphQLSettings>>().Value.EnableMetrics));
+//builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
+//builder.Services.AddSingleton<IOrderRepository, InMemoryOrderRepository>();
 
-// builder.Services.Configure<GraphQLSettings>(Configuration.GetSection("GraphQLSettings"));
-// builder.Services.Configure<PlaygroundOptions>();
+builder.Services.AddHttpClient<IProductRepository, ProductRepository>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:6001");
+});
 
-// builder.Services.AddProductApiServices(); // Configure Product API rest
-// builder.Services.AddOrderApiServices(); // Configure Order API rest
-
-builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
-builder.Services.AddSingleton<IOrderRepository, InMemoryOrderRepository>();
-
-builder.Services.AddScoped<IProductQueryResolver, ProductQueryResolver>();
-builder.Services.AddScoped<IOrderQueryResolver, OrderQueryResolver>();
+builder.Services.AddHttpClient<IOrderRepository, OrderRepository>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7001");
+});
 
 
-builder.Services.AddControllers();
+builder.Services
+    .AddGraphQLServer()
+    .AddCacheControl()
+    .AddQueryType(q => q.Name("Query"))
+    .AddType<ProductsQuery>()
+    .AddType<OrdersQuery>()
+    .AddType<OrderSummaryResolver>();
+//.AddQueryType<GetProductsQuery>();
+//.AddQueryType<GetOrdersQuery();
+
+
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracerProviderBuilder =>
+        tracerProviderBuilder
+            .AddSource(DiagnosticsConfig.ActivitySource.Name)
+            .ConfigureResource(resource => resource
+                .AddService(DiagnosticsConfig.ServiceName))
+            .AddAspNetCoreInstrumentation()
+            .AddConsoleExporter());
 
 var app = builder.Build();
 
-//app.UseGraphQL<OrderSummarySchema>();
-//app.UseGraphQLPlayground(new PlaygroundOptions());
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
-}
-
-// app.UseEndpoints(endpoints => { endpoints.MapGraphQL(); });
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+app.MapGraphQL();
 
 app.Run();
