@@ -1,8 +1,9 @@
 using CocktailDev.Gateway;
+using CocktailDev.Gateway.Application.Builders;
 using CocktailDev.Gateway.Application.Queries;
-using CocktailDev.Gateway.Application.Resolvers;
 using CocktailDev.Gateway.Domain;
 using CocktailDev.Gateway.Infrastructure.Repositories;
+using HotChocolate.AspNetCore;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
@@ -13,14 +14,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient<IProductRepository, ProductRepository>(client =>
 {
+    //TODO configure url at appSetting.json file
     client.BaseAddress = new Uri("https://localhost:6001");
 });
 
 builder.Services.AddHttpClient<IOrderRepository, OrderRepository>(client =>
 {
+    //TODO configure url at appSetting.json file
     client.BaseAddress = new Uri("https://localhost:7001");
 });
 
+builder.Services.AddScoped<IOrderDetailsBuilder, OrderDetailsBuilder>();
 
 builder.Services
     .AddGraphQLServer()
@@ -28,10 +32,10 @@ builder.Services
     .AddQueryType(q => q.Name("Query"))
     .AddType<ProductsQuery>()
     .AddType<OrdersQuery>()
-    .AddType<OrderSummaryResolver>();
-//.AddQueryType<GetProductsQuery>();
-//.AddQueryType<GetOrdersQuery();
-
+    .AddType<OrderSummaryQuery>();
+// .UseAutomaticPersistedQueryPipeline();
+// .AddInMemoryQueryStorage();
+// .AddType<OrderSummaryResolver>();
 
 builder.Services.AddOpenTelemetry()
     .WithTracing(tracerProviderBuilder =>
@@ -44,6 +48,12 @@ builder.Services.AddOpenTelemetry()
 
 var app = builder.Build();
 
-app.MapGraphQL();
+app.MapGraphQL().WithOptions(new GraphQLServerOptions
+{
+    Tool =
+    {
+        Enable = app.Environment.IsDevelopment()
+    }
+});
 
 app.Run();

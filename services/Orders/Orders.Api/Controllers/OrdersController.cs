@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CocktailDev.Orders.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class OrdersController : ControllerBase
 {
     private readonly ILogger<OrdersController> logger;

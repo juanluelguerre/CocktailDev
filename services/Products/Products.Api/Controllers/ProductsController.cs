@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CocktailDev.Products.Api.Controllers;
 
 [ApiController]
-[Route("api/products")]
+[Route("api/[controller]")]
 public class ProductsController : ControllerBase
 {
     private readonly IMediator mediator;
@@ -30,8 +30,8 @@ public class ProductsController : ControllerBase
     {
         // TODO: We can use here a factory repository to delegate query creation
         var query = new GetProductQuery(id);
-        var products = await this.mediator.Send(query);
-        return this.Ok(products);
+        var product = await this.mediator.Send(query);
+        return this.Ok(product);
     }
 
     [HttpPost]

@@ -14,7 +14,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<ProductDetail?> FindProductAsync(long id)
     {
-        var response = await this.httpClient.GetAsync($"/api/product/{id}");
+        var response = await this.httpClient.GetAsync($"/api/products/{id}");
         response.EnsureSuccessStatusCode();
 
         var content = await response.Content.ReadAsStringAsync();
