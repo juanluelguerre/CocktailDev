@@ -35,7 +35,6 @@ builder.Services
     .AddType<OrderSummaryQuery>();
 // .UseAutomaticPersistedQueryPipeline();
 // .AddInMemoryQueryStorage();
-// .AddType<OrderSummaryResolver>();
 
 builder.Services.AddOpenTelemetry()
     .WithTracing(tracerProviderBuilder =>

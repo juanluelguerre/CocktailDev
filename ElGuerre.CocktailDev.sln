@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Angular", "Angular", "{93DB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Customers", "Customers", "{8CD74827-573A-4176-87FB-AD966115AF7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailDev.Gateway", "services\Gateway\CocktailDev.Gateway.csproj", "{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailDev.Gateway", "services\Gateway\CocktailDev.Gateway.csproj", "{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
