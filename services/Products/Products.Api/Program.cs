@@ -2,6 +2,7 @@
 using CocktailDev.Products.Api;
 using CocktailDev.Products.Api.Domain;
 using CocktailDev.Products.Api.Infrastructure.Repositories;
+using Elastic.Apm.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using OpenTelemetry;
 using OpenTelemetry.Logs;
@@ -73,7 +74,7 @@ builder.Services.AddOpenTelemetry()
             {
                 options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
                 options.ExportProcessorType = ExportProcessorType.Simple;
-                options.Endpoint = new Uri("http://localhost:8200");
+                options.Endpoint = new Uri("https://localhost:8200");
                 options.Headers = "Authorization=Bearer xxxxxx";
                 //options.HttpClientFactory = () =>
                 //{
@@ -107,6 +108,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseElasticApm(app.Configuration);
 
 app.UseHttpsRedirection();
 

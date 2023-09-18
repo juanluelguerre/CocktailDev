@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Customers", "Customers", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailDev.Gateway", "services\Gateway\CocktailDev.Gateway.csproj", "{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoctailDev.Agents.ElasticApm", "agents\CoctailDev.Agents.ElasticApm\CoctailDev.Agents.ElasticApm.csproj", "{3A974883-655B-45E1-9B88-FDB593BC3ADF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A974883-655B-45E1-9B88-FDB593BC3ADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A974883-655B-45E1-9B88-FDB593BC3ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A974883-655B-45E1-9B88-FDB593BC3ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A974883-655B-45E1-9B88-FDB593BC3ADF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
