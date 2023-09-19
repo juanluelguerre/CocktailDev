@@ -44,6 +44,21 @@ builder.Host.UseSerilog((context, services, config) =>
         //                           EmitEventFailureHandling.RaiseCallback,
         //    }).Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
         .ReadFrom.Configuration(context.Configuration);
+
+
+    // Ref: https://dev.to/kim-ch/observability-net-opentelemetry-collector-25g1
+    // Only export to OpenTelemetry collector    
+    //config.WriteTo.OpenTelemetry(cfg =>
+    //{
+    //    cfg.Endpoint = $"https://localhost:8200/v1/logs";
+    //    cfg.IncludedData = IncludedData.TraceIdField | IncludedData.SpanIdField;
+    //    cfg.ResourceAttributes = new Dictionary<string, object>
+    //    {
+    //        {"service.name", observabilityOptions.ServiceName},
+    //        {"index", 10},
+    //        {"flag", true},
+    //        {"value", 3.14}
+    //    };
 });
 
 builder.Services.AddMediatR(cfg =>
@@ -61,21 +76,22 @@ builder.Services.AddSwaggerGen();
 
 // Ref: https://www.elastic.co/blog/manual-instrumentation-of-net-applications-opentelemetry
 builder.Services.AddOpenTelemetry()
-    .WithTracing(tracerProviderBuilder =>
-        tracerProviderBuilder
+    .WithTracing(config =>
+        config
+            .SetErrorStatusOnException(true)
             .AddSource(DiagnosticsConfig.ActivitySource.Name)
             .ConfigureResource(resource => resource
                 .AddService(DiagnosticsConfig.ServiceName))
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
             .AddConsoleExporter()
-            .AddElasticsearchClientInstrumentation(options => { })
+            // .AddElasticsearchClientInstrumentation(options => {  })
             .AddOtlpExporter(options =>
             {
                 options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
-                options.ExportProcessorType = ExportProcessorType.Simple;
-                options.Endpoint = new Uri("https://localhost:8200");
-                options.Headers = "Authorization=Bearer xxxxxx";
+                options.ExportProcessorType = ExportProcessorType.Batch;
+                options.Endpoint = new Uri("http://localhost:4317");
+                //options.Headers = "Authorization=Bearer k9igmeF267v663TW51BlmE2V";
                 //options.HttpClientFactory = () =>
                 //{
                 //    var handler = new HttpClientHandler
@@ -86,7 +102,7 @@ builder.Services.AddOpenTelemetry()
 
                 //    var client = new HttpClient(handler)
                 //    {
-                //        BaseAddress = new Uri("https://localhost:9200")
+                //        BaseAddress = new Uri("https://localhost:8200")
                 //    };
 
                 //    //const string authenticationString = $"elastic:hx21ixWh2W4OdJWs";
@@ -100,6 +116,12 @@ builder.Services.AddOpenTelemetry()
     );
 
 
+// OTEL_EXPORTER_OTLP_ENDPOINT: // https://localhost:8200 // https://apm-server-apm-http.default.svc:8200 
+// OTEL_EXPORTER_OTLP_HEADERS: "Authorization=Bearer <secret-token>"
+// OTEL_METRICS_EXPORTER: otlp
+// OTEL_LOGS_EXPORTER: otlp
+// OTEL_RESOURCE_ATTRIBUTES: service.name=<app-name>,service.version=<app-version>,deployment.environment=production
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -108,7 +130,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseElasticApm(app.Configuration);
+
+// app.UseElasticApm(app.Configuration);
 
 app.UseHttpsRedirection();
 

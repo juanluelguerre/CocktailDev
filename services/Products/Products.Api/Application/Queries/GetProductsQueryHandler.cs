@@ -1,6 +1,9 @@
-﻿using CocktailDev.Products.Api.Application.ViewModels;
+﻿using System.Diagnostics;
+using CocktailDev.Products.Api.Application.ViewModels;
 using CocktailDev.Products.Api.Domain;
 using MediatR;
+using Serilog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace CocktailDev.Products.Api.Application.Queries;
 
