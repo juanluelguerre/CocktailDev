@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net.NetworkInformation;
+using System.Text;
 using CocktailDev.Products.Api;
 using CocktailDev.Products.Api.Domain;
 using CocktailDev.Products.Api.Infrastructure.Repositories;
@@ -8,12 +9,14 @@ using OpenTelemetry;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using OpenTelemetry.Exporter;
 using Serilog;
+using Google.Protobuf.WellKnownTypes;
+using Microsoft.AspNetCore.Hosting.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 //TODO: Demo (1) Adding Serilog
 builder.Logging.ClearProviders();
-
 
 builder.Host.UseSerilog((context, services, config) =>
 {
@@ -74,46 +77,90 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Ref: https://www.elastic.co/blog/manual-instrumentation-of-net-applications-opentelemetry
 builder.Services.AddOpenTelemetry()
     .WithTracing(config =>
-        config
-            .SetErrorStatusOnException(true)
+        config.SetErrorStatusOnException()
             .AddSource(DiagnosticsConfig.ActivitySource.Name)
             .ConfigureResource(resource => resource
                 .AddService(DiagnosticsConfig.ServiceName))
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
-            .AddConsoleExporter()
-            // .AddElasticsearchClientInstrumentation(options => {  })
+// .AddConsoleExporter()
+//.AddZipkinExporter(o => o.HttpClientFactory = () =>
+//{
+//    var client = new HttpClient();
+//    client.DefaultRequestHeaders.Add("X-MyCustomHeader", "value");
+//    return client;
+//}));
             .AddOtlpExporter(options =>
             {
-                options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
-                options.ExportProcessorType = ExportProcessorType.Batch;
-                options.Endpoint = new Uri("http://localhost:4317");
-                //options.Headers = "Authorization=Bearer k9igmeF267v663TW51BlmE2V";
+                //options.Endpoint = new Uri("http://localhost:4317");
+                options.Endpoint =
+                    new Uri("http://opentelemetry-collector.elk.svc:4317");
+                options.Protocol = OtlpExportProtocol.HttpProtobuf;
+                options.Headers = "Authorization=Bearer k9igmeF267v663TW51BlmE2V";
+                // options.ExportProcessorType = ExportProcessorType.Batch;
                 //options.HttpClientFactory = () =>
                 //{
-                //    var handler = new HttpClientHandler
-                //    {
-                //        ServerCertificateCustomValidationCallback =
-                //            (sender, cert, chain, sslPolicyErrors) => true
-                //    };
-
-                //    var client = new HttpClient(handler)
-                //    {
-                //        BaseAddress = new Uri("https://localhost:8200")
-                //    };
-
-                //    //const string authenticationString = $"elastic:hx21ixWh2W4OdJWs";
-                //    //var base64EncodedAuthenticationString =
-                //    //    Convert.ToBase64String(Encoding.UTF8.GetBytes(authenticationString));
-                //    //client.DefaultRequestHeaders.Add("Authorization",
-                //    //    "Basic " + base64EncodedAuthenticationString);
+                //    var client = new HttpClient();
+                //    client.DefaultRequestHeaders.Add("X-MyCustomHeader", "value");
                 //    return client;
                 //};
-            })
-    );
+            }));
+
+
+// Ref: https://www.elastic.co/blog/manual-instrumentation-of-net-applications-opentelemetry
+//builder.Services.AddOpenTelemetry()
+//    // .WithMetrics()
+//    .WithTracing(config =>
+//        config.SetErrorStatusOnException(false)
+//            .AddSource(DiagnosticsConfig.ActivitySource.Name)
+//            .ConfigureResource(resource => resource
+//                .AddService(DiagnosticsConfig.ServiceName))
+//            .AddAspNetCoreInstrumentation()
+//            .AddHttpClientInstrumentation()
+//            // .AddConsoleExporter()
+//            // .AddElasticsearchClientInstrumentation()            
+//            .AddOtlpExporter(options =>
+//            {
+//                // options.Protocol = OtlpExportProtocol.HttpProtobuf;
+//                //options.ExportProcessorType = ExportProcessorType.Simple;
+//                options.Endpoint = new Uri("http://localhost:4317");
+
+//                // options.Headers = "Authorization=Bearer k9igmeF267v663TW51BlmE2V";
+//                //options.HttpClientFactory = () =>
+//                //{
+//                //    var handler = new HttpClientHandler
+//                //    {
+//                //        ServerCertificateCustomValidationCallback =
+//                //            (sender, cert, chain, sslPolicyErrors) => true
+//                //    };
+
+//                //    var client = new HttpClient(handler)
+//                //    {
+//                //        BaseAddress = new Uri("http://localhost:4317")
+//                //    };
+
+//                //    //const string authenticationString = $"elastic:hx21ixWh2W4OdJWs";
+//                //    //var base64EncodedAuthenticationString =
+//                //    //    Convert.ToBase64String(Encoding.UTF8.GetBytes(authenticationString));
+//                //    //client.DefaultRequestHeaders.Add("Authorization",
+//                //    //    "Basic " + base64EncodedAuthenticationString);
+//                //    return client;
+//                //};
+//            }));
+
+
+Environment.SetEnvironmentVariable("OTEL_LOG_LEVEL", "1");
+Environment.SetEnvironmentVariable("COREHOST_TRACEFILE", "corehost_verbose_tracing.log");
+
+Environment.SetEnvironmentVariable("OTEL_EXPORTER_OTLP_ENDPOINT", "https://localhost:8200");
+Environment.SetEnvironmentVariable("OTEL_EXPORTER_OTLP_HEADERS",
+    "Authorization=Bearer k9igmeF267v663TW51BlmE2V");
+Environment.SetEnvironmentVariable("OTEL_METRICS_EXPORTER", "otlp");
+Environment.SetEnvironmentVariable("OTEL_LOGS_EXPORTER", "otlp");
+Environment.SetEnvironmentVariable("OTEL_RESOURCE_ATTRIBUTES",
+    "service.name=cocktaildev,service.version=1.0.0,deployment.environment=development");
 
 
 // OTEL_EXPORTER_OTLP_ENDPOINT: // https://localhost:8200 // https://apm-server-apm-http.default.svc:8200 
@@ -122,7 +169,16 @@ builder.Services.AddOpenTelemetry()
 // OTEL_LOGS_EXPORTER: otlp
 // OTEL_RESOURCE_ATTRIBUTES: service.name=<app-name>,service.version=<app-version>,deployment.environment=production
 
+// Register a Tracer, so it can be injected into other components (for example, Controllers)
+// builder.Services.AddSingleton(TracerProvider.Default.GetTracer(DiagnosticsConfig.ServiceName));
+
 var app = builder.Build();
+
+//app.MapGet("/", (Tracer tracer) =>
+//{
+//    using var span = tracer.StartActiveSpan("app.manual-span");
+//    span.SetAttribute("app.manual-span.message", "Adding custom spans is also super easy!");
+//});
 
 if (app.Environment.IsDevelopment())
 {
@@ -134,9 +190,6 @@ if (app.Environment.IsDevelopment())
 // app.UseElasticApm(app.Configuration);
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
