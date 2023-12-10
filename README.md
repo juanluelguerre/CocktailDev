@@ -42,3 +42,7 @@ Much more...
 1. Create a folder C:\data\cocktaildev
 2. COPY deploy\otel\otel-collector-config.yaml to C:\data\otel\otel-collector-config.yaml
 3. run `docker-compose -p cocktaildev up -d`
+
+# Observavility
+
+![Prometheus and Elastic](assets/observability/PrometheusAndElastic.png)

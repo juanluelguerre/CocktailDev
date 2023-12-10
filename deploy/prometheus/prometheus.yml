@@ -1,0 +1,11 @@
+# https://docs.docker.com/config/daemon/prometheus/
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+
+scrape_configs:
+  - job_name: "cocktaildev-otel-collector"
+    scrape_interval: 15s
+    static_configs:
+      - targets: ["otel-collector:8889"]
+      - targets: ["otel-collector:8888"]
