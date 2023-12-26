@@ -4,22 +4,17 @@ using MediatR;
 
 namespace CocktailDev.Products.Api.Application.Commands;
 
-public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProductDetail>
+public class CreateProductCommandHandler(IProductRepository repository)
+    : IRequestHandler<CreateProductCommand, ProductDetail>
 {
-    private readonly IProductRepository productRepository;
-
-    public CreateProductCommandHandler(IProductRepository productRepository)
-    {
-        this.productRepository = productRepository;
-    }
-
     public async Task<ProductDetail> Handle(CreateProductCommand request,
         CancellationToken cancellationToken)
     {
-        var product = new ProductRequest(request.Id, request.Name, request.Price);
+        var product =
+            new ProductRequest(request.Id, request.Name, request.Description, request.Price);
         var createdProduct =
-            await this.productRepository.CreateProductAsync(
-                new ProductDetail(product.Id, product.Name, product.Price));
+            await repository.CreateProductAsync(
+                new ProductDetail(product.Id, product.Name, product.Description, product.Price));
         return createdProduct;
     }
 }

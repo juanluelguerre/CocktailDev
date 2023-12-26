@@ -1,23 +1,16 @@
-﻿using System.Diagnostics;
-using CocktailDev.Products.Api.Application.ViewModels;
+﻿using CocktailDev.Products.Api.Application.ViewModels;
 using CocktailDev.Products.Api.Domain;
 using MediatR;
-using Serilog;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace CocktailDev.Products.Api.Application.Queries;
 
-public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, List<ProductViewModel>>
+public class GetProductsQueryHandler(
+    ILogger<GetProductsQueryHandler> logger,
+    IProductRepository repository)
+    : IRequestHandler<GetProductsQuery, List<ProductViewModel>>
 {
-    private readonly ILogger logger;
-    private readonly IProductRepository productRepository;
-
-    public GetProductsQueryHandler(ILogger<GetProductsQueryHandler> logger,
-        IProductRepository productRepository)
-    {
-        this.logger = logger;
-        this.productRepository = productRepository;
-    }
+    private readonly ILogger logger = logger;
 
     public async Task<List<ProductViewModel>> Handle(GetProductsQuery request,
         CancellationToken cancellationToken)
@@ -30,7 +23,7 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, List<Pr
             if (random.Next(0, 5) < 2)
                 throw new Exception("Some random error happened !!!");
 
-            var products = await this.productRepository.GetProductsAsync();
+            var products = await repository.GetProductsAsync();
             return products.Select(p => new ProductViewModel(p.Id, p.Name)).ToList();
         }
         catch (Exception ex)

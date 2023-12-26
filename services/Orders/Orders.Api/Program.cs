@@ -1,4 +1,4 @@
-﻿using CocktailDev.Orders.Api.Domain;
+﻿using CocktailDev.Orders.Api.Domain.Aggregates.OrderAggregate;
 using CocktailDev.Orders.Api.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +12,6 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddSingleton<IOrderRepository, InMemoryOrderRepository>();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

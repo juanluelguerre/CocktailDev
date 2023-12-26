@@ -4,19 +4,13 @@ using MediatR;
 
 namespace CocktailDev.Products.Api.Application.Queries;
 
-public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductDetailViewModel>
+public class GetProductQueryHandler(IProductRepository repository)
+    : IRequestHandler<GetProductQuery, ProductDetailViewModel>
 {
-    private readonly IProductRepository productRepository;
-
-    public GetProductQueryHandler(IProductRepository productRepository)
-    {
-        this.productRepository = productRepository;
-    }
-
     public async Task<ProductDetailViewModel> Handle(GetProductQuery request,
         CancellationToken cancellationToken)
     {
-        var product = await this.productRepository.FindProductAsync(request.Id);
+        var product = await repository.FindProductAsync(request.Id);
 
         // TODO: Use a custom exception ProductNotFoundException
         if (product == null)
