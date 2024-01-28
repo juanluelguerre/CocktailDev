@@ -1,20 +1,16 @@
-﻿using CocktailDev.Products.Api.Application.Requests;
-using CocktailDev.Products.Api.Domain;
+﻿using CocktailDev.Products.Api.Domain.Aggregates;
 using MediatR;
 
 namespace CocktailDev.Products.Api.Application.Commands;
 
 public class CreateProductCommandHandler(IProductRepository repository)
-    : IRequestHandler<CreateProductCommand, ProductDetail>
+    : IRequestHandler<CreateProductCommand, Product>
 {
-    public async Task<ProductDetail> Handle(CreateProductCommand request,
+    public async Task<Product> Handle(CreateProductCommand request,
         CancellationToken cancellationToken)
     {
-        var product =
-            new ProductRequest(request.Id, request.Name, request.Description, request.Price);
-        var createdProduct =
-            await repository.CreateProductAsync(
-                new ProductDetail(product.Id, product.Name, product.Description, product.Price));
-        return createdProduct;
+        var product = Product.Create(request.Id, request.Name, request.Description, request.Price);
+
+        return await repository.AddAsync(product, cancellationToken);
     }
 }

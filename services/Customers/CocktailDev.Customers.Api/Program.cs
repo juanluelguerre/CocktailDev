@@ -1,4 +1,4 @@
-using CocktailDev.Customers.Api.Domain;
+using CocktailDev.Customers.Api.Domain.Aggregates;
 using CocktailDev.Customers.Api.Infrastructure;
 using CocktailDev.Customers.Api.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;

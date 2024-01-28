@@ -7,7 +7,7 @@ namespace CocktailDev.Customers.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CustomersController(IMediator mediator) : ControllerBase
+public class CustomersController(ISender mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetCustomers()

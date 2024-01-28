@@ -3,4 +3,4 @@ using MediatR;
 
 namespace CocktailDev.Products.Api.Application.Queries;
 
-public record GetProductQuery(long Id) : IRequest<ProductDetailViewModel>;
+public record GetProductQuery(Guid Id) : IRequest<ProductDetailViewModel>;

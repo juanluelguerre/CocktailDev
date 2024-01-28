@@ -1,4 +1,4 @@
-﻿using CocktailDev.Customers.Api.Domain.SeedWork;
+﻿using CocktailDev.Services.Common.Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace CocktailDev.Customers.Api.Infrastructure

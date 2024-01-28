@@ -1,4 +1,4 @@
-﻿namespace CocktailDev.Customers.Api.Domain.SeedWork;
+﻿namespace CocktailDev.Services.Common.Domain.SeedWork;
 
 public interface IUnitOfWork
 {

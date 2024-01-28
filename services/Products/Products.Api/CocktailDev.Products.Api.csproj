@@ -15,6 +15,10 @@
     <PackageReference Include="Elastic.Apm.AspNetCore" Version="1.25.1" />
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.7.0-rc.1" />
@@ -38,7 +42,10 @@
 	  <Folder Include="Application\Extensions\" />
 	  <Folder Include="Application\Models\" />
 	  <Folder Include="Application\Settings\" />
-	  <Folder Include="Infrastructure\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Services.Common\CocktailDev.Services.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

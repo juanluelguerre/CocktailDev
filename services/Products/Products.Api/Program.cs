@@ -1,22 +1,10 @@
-﻿using System.Net.NetworkInformation;
-using System.Runtime.InteropServices;
-using System.Text;
-using CocktailDev.Products.Api;
-using CocktailDev.Products.Api.Domain;
-using CocktailDev.Products.Api.Infrastructure.Repositories;
-using Elastic.Apm.AspNetCore;
-using Microsoft.AspNetCore.Mvc;
-using OpenTelemetry;
+﻿using System.Runtime.InteropServices;
+using CocktailDev.Products.Api.Infrastructure.Extensions;
+using OpenTelemetry.Exporter;
 using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using OpenTelemetry.Exporter;
-using Serilog;
-using Google.Protobuf.WellKnownTypes;
-using Microsoft.AspNetCore.Hosting.Server;
-using Serilog.Sinks.OpenTelemetry;
-using Serilog.Core;
-using OpenTelemetry.Metrics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -90,7 +78,7 @@ builder.Services.AddMediatR(cfg =>
     // cfg.AddBehavior<...abc..>();
 });
 
-builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
+builder.Services.AddProducts(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

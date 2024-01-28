@@ -1,6 +1,8 @@
-﻿namespace CocktailDev.Customers.Api.Domain.Aggregates.CustomerAggregate;
+﻿using CocktailDev.Services.Common.Domain.SeedWork;
 
-public sealed class Customer
+namespace CocktailDev.Customers.Api.Domain.Aggregates;
+
+public sealed class Customer : IAggregateRoot
 {
     public long Id { get; private set; }
     public string Name { get; private set; }

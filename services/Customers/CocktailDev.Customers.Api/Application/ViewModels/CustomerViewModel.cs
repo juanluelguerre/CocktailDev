@@ -1,3 +1,3 @@
 ﻿namespace CocktailDev.Customers.Api.Application.ViewModels;
 
-public record struct CustomerViewModel(long Id, string Name, string Email);
+public record struct CustomerDetails(long Id, string Name, string Email);

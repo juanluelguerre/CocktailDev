@@ -1,4 +1,4 @@
-﻿namespace CocktailDev.Customers.Api.Domain.Aggregates.CustomerAggregate;
+﻿namespace CocktailDev.Customers.Api.Domain.Aggregates;
 
 public enum PaymentMethod
 {

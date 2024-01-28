@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailDev.Customers.Api",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services.Common", "Services.Common", "{0FB77098-E88F-4FC9-9836-6296ACEC2E8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailDev.Services.Common", "Services.Common\CocktailDev.Services.Common.csproj", "{B6D9EFA9-ECAA-4AA8-AAD7-2593C4BD8C5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{8A2DF743-6931-4C28-8AE8-948F9C7F6EC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A2DF743-6931-4C28-8AE8-948F9C7F6EC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A2DF743-6931-4C28-8AE8-948F9C7F6EC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6D9EFA9-ECAA-4AA8-AAD7-2593C4BD8C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6D9EFA9-ECAA-4AA8-AAD7-2593C4BD8C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6D9EFA9-ECAA-4AA8-AAD7-2593C4BD8C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6D9EFA9-ECAA-4AA8-AAD7-2593C4BD8C5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,6 +106,7 @@ Global
 		{8CD74827-573A-4176-87FB-AD966115AF7A} = {BC7C0AF4-4A96-4ABC-BC86-FB5AE5BD8377}
 		{78EB8ADD-A7A5-42D7-8D9E-0D4BD5D2866C} = {BC7C0AF4-4A96-4ABC-BC86-FB5AE5BD8377}
 		{8A2DF743-6931-4C28-8AE8-948F9C7F6EC1} = {8CD74827-573A-4176-87FB-AD966115AF7A}
+		{B6D9EFA9-ECAA-4AA8-AAD7-2593C4BD8C5B} = {0FB77098-E88F-4FC9-9836-6296ACEC2E8E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49935850-2529-4782-87F8-C1994D87A915}

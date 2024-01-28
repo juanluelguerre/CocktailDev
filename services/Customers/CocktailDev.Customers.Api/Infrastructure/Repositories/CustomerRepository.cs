@@ -1,6 +1,5 @@
-﻿using CocktailDev.Customers.Api.Domain;
-using CocktailDev.Customers.Api.Domain.Aggregates.CustomerAggregate;
-using CocktailDev.Customers.Api.Domain.SeedWork;
+﻿using CocktailDev.Customers.Api.Domain.Aggregates;
+using CocktailDev.Services.Common.Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace CocktailDev.Customers.Api.Infrastructure.Repositories;

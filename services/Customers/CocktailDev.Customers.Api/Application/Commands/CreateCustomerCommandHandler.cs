@@ -1,5 +1,4 @@
-﻿using CocktailDev.Customers.Api.Domain;
-using CocktailDev.Customers.Api.Domain.Aggregates.CustomerAggregate;
+﻿using CocktailDev.Customers.Api.Domain.Aggregates;
 using MediatR;
 
 namespace CocktailDev.Customers.Api.Application.Commands;

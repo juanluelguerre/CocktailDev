@@ -19,7 +19,6 @@
 	  <Folder Include="Application\Models\" />
 	  <Folder Include="Application\Requests\" />
 	  <Folder Include="Application\Settings\" />
-	  <Folder Include="Infrastructure\Queries\" />
   </ItemGroup>
 
 </Project>

@@ -6,5 +6,5 @@ public record struct OrderViewModel(
     long OrderId,
     DateTime OrderDate,
     Customer Customer,
-    List<ProductViewModel> OrderItems,
+    List<ProductDetails> OrderItems,
     decimal TolAmount);

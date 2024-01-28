@@ -3,4 +3,6 @@ using MediatR;
 
 namespace CocktailDev.Customers.Api.Application.Queries;
 
-public record GetCustomersQuery() : IRequest<List<CustomerViewModel>>;
+public record GetCustomerQuery(long Id) : IRequest<CustomerDetails>;
+
+public record GetCustomersQuery() : IRequest<List<CustomerDetails>>;
