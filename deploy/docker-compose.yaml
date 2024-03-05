@@ -38,7 +38,7 @@ services:
     mem_reservation: 512m
     networks:
       - infra_net
-    #
+    
     # Configure Elastic 8.5.x for the first use:
     # 1. Login in Elastic terminal
     # 2. cd bin

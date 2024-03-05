@@ -25,6 +25,7 @@ receivers:
   #         static_configs:
   #           - targets: ["0.0.0.0:8888"]
 
+
 processors:
   batch:
   memory_limiter:
