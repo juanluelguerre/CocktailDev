@@ -1,4 +1,10 @@
-﻿namespace CocktailDev.Orders.Api.Application.ViewModels;
+﻿using CocktailDev.Orders.Api.Domain.Aggregates.CustomerAggregate;
 
-public readonly record struct OrderViewModel(int OrderNumber, DateTime Date, string Status,
-    string Description, string Address, List<OrderItemViewModel> Items, double Total);
+namespace CocktailDev.Orders.Api.Application.ViewModels;
+
+public record struct OrderViewModel(
+    long OrderId,
+    DateTime OrderDate,
+    Customer Customer,
+    List<ProductDetails> OrderItems,
+    decimal TolAmount);

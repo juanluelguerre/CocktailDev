@@ -1,0 +1,100 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+  # Data sources: metrics
+  hostmetrics:
+    collection_interval: 1m
+    scrapers:
+      cpu:
+      memory:
+      disk:
+      load:
+      filesystem:
+      network:
+      processes:
+      paging:
+
+  # Collect own metrics
+  # prometheus:
+  #   config:
+  #     scrape_configs:
+  #       - job_name: "otel-collector"
+  #         scrape_interval: 10s
+  #         static_configs:
+  #           - targets: ["0.0.0.0:8888"]
+
+processors:
+  batch:
+  memory_limiter:
+    # check_interval is the time between measurements of memory usage for the
+    # purposes of avoiding going over the limits. Defaults to zero, so no
+    # checks will be performed. Values below 1 second are not recommended since
+    # it can result in unnecessary CPU consumption.
+    check_interval: 5s
+    # Maximum amount of memory, in MiB, targeted to be allocated by the process heap.
+    # Note that typically the total memory usage of process will be about 50MiB higher
+    # than this value.
+    limit_mib: 1900
+    # The queued_retry processor uses a bounded queue to relay batches from the receiver or previous
+    # processor to the next processor.
+  resourcedetection:
+    detectors: [ecs, system, env]
+
+exporters:
+  # logging:
+  #   loglevel: debug
+  otlp/elastic:
+    # Elastic APM server https endpoint without the "https://" prefix
+    # endpoint: "${ELASTIC_APM_SERVER_ENDPOINT}"
+    endpoint: apm-server:8200
+    compression: none
+    tls:
+      insecure: true
+      insecure_skip_verify: true
+    # headers:
+    #   # Elastic APM Server secret token
+    #   # Authorization: "Bearer ${ELASTIC_APM_SECRET_TOKEN}"
+  elasticsearch:
+    endpoints: ["http://elastic:9200"]
+    #index: "cocktaildev-traces-1"
+    logs_index: "cocktaildev-logs-1"
+    traces_index: "cocktaildev-traces-1"
+    timeout: 15s
+
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+
+  # jaeger:
+  #   endpoint: "jaeger:14250"
+  #   protocol: http
+
+extensions:
+  health_check:
+    endpoint: ":13133"
+  memory_ballast:
+    size_in_percentage: 80
+  # zpages:
+  #   endpoint: ":1777"
+
+service:
+  extensions:
+    - health_check
+    - memory_ballast
+    # - zpages
+  pipelines:
+    logs:
+      receivers: [otlp]
+      processors: [batch, memory_limiter]
+      exporters: [elasticsearch]
+    traces:
+      receivers: [otlp]
+      processors: [batch, memory_limiter]
+      #exporters: [elasticsearch]
+      #exporters: [otlp/elastic , logging]
+      exporters: [otlp/elastic]
+    metrics:
+      receivers: [otlp, hostmetrics]
+      processors: [batch, memory_limiter, resourcedetection]
+      exporters: [otlp/elastic, prometheus] # telemetry type is not supported

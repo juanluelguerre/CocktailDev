@@ -1,0 +1,137 @@
+version: '3'
+
+services:
+
+  elastic:
+    container_name: elastic
+    hostname: elastic
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.1
+    environment:
+      - discovery.type=single-node
+      # - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - network.host=0.0.0.0
+    volumes:
+      - /c/data/elasticsearch/db:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+    mem_limit: 1024m
+    mem_reservation: 512m
+    networks:
+      - infra_net
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.16.1
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_URL: http://elastic:9200
+      ELASTICSEARCH_HOSTS: http://elastic:9200
+      discovery.type: single-node
+    ports:
+      - 5601:5601
+    volumes:
+      - /c/data/kibana/data:/usr/share/kibana/data
+      #- /c/data/kibana/config:/usr/share/kibana/config
+    depends_on:
+      - elastic
+    mem_limit: 2048m
+    mem_reservation: 512m
+    networks:
+      - infra_net
+    #
+    # Configure Elastic 8.5.x for the first use:
+    # 1. Login in Elastic terminal
+    # 2. cd bin
+    # 3. run `elasticsearch-create-enrollment-token --scope kibana` and paste in the UI http://localhost:5601
+    # 4. run `elasticsearch-reset-password -u elastic` # Reset password for elastic user. The default one !
+    #
+    # Password generate:Y0tqIoV4Tm5YQfQhyXqJ
+    #
+    # Configure additiona users
+    # 5. run `User/password: admin / Password1`
+    # 6. run `Create using commanline inside kibana container `bin\elasticsearch-users useradd admin`
+    # 7. run `elasticsearch-users roles admin -r kibana_admin    
+
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.16.1
+    depends_on:
+      elastic:
+        condition: service_healthy
+      kibana:
+        condition: service_healthy
+    cap_add: [ "CHOWN", "DAC_OVERRIDE", "SETGID", "SETUID" ]
+    cap_drop: [ "ALL" ]
+    ports:
+      - 8200:8200
+    command: >
+      apm-server -e
+        -E apm-server.rum.enabled=true
+        -E setup.kibana.host=kibana:5601
+        -E setup.template.settings.index.number_of_replicas=0
+        -E apm-server.kibana.enabled=true
+        -E apm-server.kibana.host=kibana:5601
+        -E output.elasticsearch.hosts=["elastic:9200"]
+    healthcheck:
+      interval: 10s
+      retries: 12
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8200/
+    networks:
+      - infra_net
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - /c/data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - infra_net
+
+  grafana:
+    image: grafana/grafana:latest
+    build:
+      context: ./scripts/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - /c/data/grafana/datasources:/etc/grafana/provisioning/datasources
+      - /c/data/grafana/dashboards:/etc/grafana/provisioning/dashboards
+    networks:
+      - infra_net
+
+  # jaeger:
+  #   image: jaegertracing/all-in-one:latest
+  #   ports:
+  #     - "5775:5775/udp"
+  #     - "6831:6831/udp"
+  #     - "6832:6832/udp"
+  #     - "5778:5778"
+  #     - "16686:16686"
+  #     - "14268:14268"
+  #     - "9411:9411"
+  #   networks:
+  #     - infra_net
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib
+    volumes:
+      - /c/data/otel/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+    ports:
+      - 1888:1888 # pprof extension
+      - 8888:8888 # Prometheus metrics exposed by the collector
+      - 8889:8889 # Prometheus exporter metrics
+      - 13133:13133 # health_check extension
+      - 4317:4317 # OTLP gRPC receiver
+      - 4318:4318 # OTLP http receiver
+      - 1777:1777 # zpages extension
+    networks:
+      - infra_net
+
+networks:
+  # All these network will be created under docker network with the project preffix: ie.: cocktaildev_infra_net
+  infra_net:
+    driver: bridge

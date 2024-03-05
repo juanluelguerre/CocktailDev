@@ -1,26 +1,37 @@
-﻿using CocktailDev.Products.Api.Application.ViewModels;
+﻿using CocktailDev.Products.Api.Application.Commands;
+using CocktailDev.Products.Api.Application.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CocktailDev.Products.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class ProductsController : ControllerBase
+[Route("api/[controller]")]
+public class ProductsController(ISender mediator) : ControllerBase
 {
-    private readonly ILogger<ProductsController> logger;
-
-    public ProductsController(ILogger<ProductsController> logger)
+    [HttpGet]
+    public async Task<IActionResult> GetProducts()
     {
-        this.logger = logger;
+        // TODO: We can use here a factory repository to delegate query creation
+        var query = new GetProductsQuery();
+        var products = await mediator.Send(query);
+        return this.Ok(products);
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<ProductViewModel> Get()
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetProduct(Guid id)
     {
-        this.logger.LogTrace("Getting Products");
+        // TODO: We can use here a factory repository to delegate query creation
+        var query = new GetProductQuery(id);
+        var product = await mediator.Send(query);
+        return this.Ok(product);
+    }
 
-        return Enumerable.Range(1, 1)
-            .Select(index => new ProductViewModel(1, "Laptop", "Dell XPS 15", "Computing"))
-            .ToArray();
+    [HttpPost]
+    public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command)
+    {
+        // TODO: We can use here a factory repository to delegate command creation
+        var result = await mediator.Send(command);
+        return this.Ok(result);
     }
 }

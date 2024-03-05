@@ -1,35 +1,40 @@
-﻿using CocktailDev.Orders.Api.Application.ViewModels;
+﻿using CocktailDev.Orders.Api.Application.Commands;
+using CocktailDev.Orders.Api.Application.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CocktailDev.Orders.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class OrdersController : ControllerBase
 {
     private readonly ILogger<OrdersController> logger;
+    private readonly IMediator mediator;
 
-    public OrdersController(ILogger<OrdersController> logger)
+    public OrdersController(ILogger<OrdersController> logger, IMediator mediator)
     {
         this.logger = logger;
+        this.mediator = mediator;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<OrderViewModel> Get()
+    [HttpGet]
+    public async Task<IActionResult> Get()
     {
         this.logger.LogTrace("Getting Orders");
 
-        var orderItems = new List<OrderItemViewModel>()
-        {
-            new("Laptop", 1, 1100, ""),
-            new("Mouse", 1, 50, ""),
-            new("Keyboard", 1, 99.5, ""),
-            new("Camera", 1, 45, ""),
-            new("Microphone", 1, 67.99, ""),
-        };
+        // TODO: We can use here a factory repository to delegate query creation
+        var query = new GetOrdersQuery();
+        var orders = await this.mediator.Send(query);
+        return this.Ok(orders);
+    }
 
-        return Enumerable.Range(1, 1).Select(i => new OrderViewModel(Random.Shared.Next(1, 99),
-            DateTime.Now, "Initiated", "My first Setup", "Washington Square, 125, 1B. Madrid",
-            orderItems, 100)).ToArray();
+    [HttpPost]
+    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command)
+    {
+        // TODO: We can use here a factory repository to delegate command creation
+        var result = await this.mediator.Send(command);
+        // Additional logic if needed
+        return this.Ok(result);
     }
 }
